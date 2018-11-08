@@ -230,6 +230,10 @@ sub GetPkgFormat()
    {
       return "deb";
    }
+   if ( -f "/etc/gentoo-release" )
+   {
+      return "rpm";
+   }
    else
    {
       Die("Unknown OS");
@@ -249,6 +253,10 @@ sub GetOsTag()
       elsif ( -f "/etc/lsb-release" )
       {
          chomp( $gOSTAG = `sed -n -e '/DISTRIB_RELEASE/{s/.*=/u/; s/[.].*//; p;}' /etc/lsb-release` );
+      }
+      elsif ( -f "/etc/gentoo-release" )
+      {
+         chomp( $gOSTAG = `sed -n -e '1{s/[^0-9]*/r/; s/[.].*//; p;}' /etc/gentoo-release` );
       }
       else
       {
